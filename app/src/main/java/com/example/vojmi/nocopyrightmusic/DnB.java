@@ -1,10 +1,12 @@
 package com.example.vojmi.nocopyrightmusic;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -17,6 +19,20 @@ public class DnB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView((R.layout.song_list));
 
+        // Finds the 'BACK TO GENRES' button.
+        Button back = (Button) findViewById(R.id.back);
+
+        // Sets the click listener to that button
+        back.setOnClickListener(new View.OnClickListener() {
+            // After clicking on this category, the method will be executed
+            @Override
+            public void onClick(View view) {
+                // Create a new intent to open MainActivity
+                Intent dnbIntent = new Intent(DnB.this, MainActivity.class);
+                // Starts that new activity
+                startActivity(dnbIntent);
+            }
+        });
 
         // Create a list of songs
         final ArrayList<Song> songs = new ArrayList<Song>();

@@ -3,4 +3,5 @@
     <string name="first_style">Drum\'n\'Bass</string>
     <string name="second_style">Dubstep</string>
     <string name="third_style">House</string>
+    <string name="back_to_genres">Back to Genres</string>
 </resources>
