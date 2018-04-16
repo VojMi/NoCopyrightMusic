@@ -14,7 +14,11 @@ import java.util.ArrayList;
 
 public class Dubstep extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +33,11 @@ public class Dubstep extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Create a new intent to open MainActivity
-                Intent dnbIntent = new Intent(Dubstep.this, MainActivity.class);
+                Intent mainIntent = new Intent(Dubstep.this, MainActivity.class);
                 // Starts that new activity
-                startActivity(dnbIntent);
+                startActivity(mainIntent);
+                // Stops music
+                releaseMediaPlayer();
             }
         });
 
@@ -53,10 +59,27 @@ public class Dubstep extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Song song = songs.get(i);
-
+                releaseMediaPlayer();
                 mMediaPlayer = MediaPlayer.create(Dubstep.this, song.getmAudioResourceId());
-                    mMediaPlayer.start();
+                mMediaPlayer.start();
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        releaseMediaPlayer();
+                    }
+                });
             }
         });
+    }
+
+    /**
+     * Cleaning of media resources (stopping one file before playing another)
+     */
+    private void releaseMediaPlayer() {
+
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 }

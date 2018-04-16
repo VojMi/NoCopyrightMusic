@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/dnb"
         style="@style/music_style"
-        android:background="@drawable/round_corners"
+        android:background="?android:attr/selectableItemBackground"
         android:text="@string/first_style" />
 
     <TextView

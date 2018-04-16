@@ -1,6 +1,8 @@
 package com.example.vojmi.nocopyrightmusic;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +15,19 @@ import java.util.ArrayList;
 
 public class DnB extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
+private AudioManager mAudioManager;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((R.layout.song_list));
+
+        mAudioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
         // Finds the 'BACK TO GENRES' button.
         Button back = (Button) findViewById(R.id.back);
@@ -28,9 +38,11 @@ public class DnB extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Create a new intent to open MainActivity
-                Intent dnbIntent = new Intent(DnB.this, MainActivity.class);
+                Intent mainIntent = new Intent(DnB.this, MainActivity.class);
                 // Starts that new activity
-                startActivity(dnbIntent);
+                startActivity(mainIntent);
+                // Stops music
+                releaseMediaPlayer();
             }
         });
 
@@ -55,9 +67,27 @@ public class DnB extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Song song = songs.get(i);
+                releaseMediaPlayer();
+
                 mMediaPlayer = MediaPlayer.create(DnB.this, song.getmAudioResourceId());
                 mMediaPlayer.start();
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        releaseMediaPlayer();
+                    }
+                });
             }
         });
+    }
+    /**
+     * Cleaning of media resources (stopping one file before playing another)
+     */
+    private void releaseMediaPlayer(){
+
+        if (mMediaPlayer!=null){
+            mMediaPlayer.release();
+            mMediaPlayer=null;
+        }
     }
 }
