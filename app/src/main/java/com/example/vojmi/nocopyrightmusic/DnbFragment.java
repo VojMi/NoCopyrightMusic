@@ -1,35 +1,41 @@
 package com.example.vojmi.nocopyrightmusic;
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class DnB extends AppCompatActivity {
+
+public class DnbFragment extends Fragment {
+    public DnbFragment() {
+
+    }
     private MediaPlayer mMediaPlayer;
-private AudioManager mAudioManager;
+    private AudioManager mAudioManager;
+
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         releaseMediaPlayer();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView((R.layout.song_list));
-        mAudioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+       View rootView=inflater.inflate(R.layout.song_list,container,false);
+        mAudioManager=(AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
 
         // Finds the 'BACK TO GENRES' button.
-        Button back = (Button) findViewById(R.id.back);
+        Button back = (Button) rootView.findViewById(R.id.back);
 
         // Sets the click listener to that button
         back.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +43,7 @@ private AudioManager mAudioManager;
             @Override
             public void onClick(View view) {
                 // Create a new intent to open MainActivity
-                Intent mainIntent = new Intent(DnB.this, MainActivity.class);
+                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
                 // Starts that new activity
                 startActivity(mainIntent);
                 // Stops music
@@ -54,9 +60,9 @@ private AudioManager mAudioManager;
         songs.add(new Song("Green Lights", "Mekanism", R.raw.dnb5));
 
         // Creates a SongAdapter based on the list of songs
-        SongAdapter adapter = new SongAdapter(this, songs);
+        SongAdapter adapter = new SongAdapter(getActivity(), songs);
         // Finding of XML object to which the list of songs will be put
-        ListView listView = (ListView) findViewById(R.id.list_of_songs);
+        ListView listView = (ListView) rootView.findViewById(R.id.list_of_songs);
         //Setting of that adapter
         listView.setAdapter(adapter);
         /**
@@ -68,7 +74,7 @@ private AudioManager mAudioManager;
                 Song song = songs.get(i);
                 releaseMediaPlayer();
 
-                mMediaPlayer = MediaPlayer.create(DnB.this, song.getmAudioResourceId());
+                mMediaPlayer = MediaPlayer.create(getActivity(), song.getmAudioResourceId());
                 mMediaPlayer.start();
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -78,6 +84,7 @@ private AudioManager mAudioManager;
                 });
             }
         });
+        return rootView;
     }
     /**
      * Cleaning of media resources (stopping one file before playing another)

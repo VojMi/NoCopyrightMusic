@@ -4,4 +4,7 @@
     <string name="second_style">Dubstep</string>
     <string name="third_style">House</string>
     <string name="back_to_genres">Back to Genres</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

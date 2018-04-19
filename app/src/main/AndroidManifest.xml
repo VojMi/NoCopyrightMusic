@@ -17,11 +17,26 @@
             </intent-filter>
         </activity>
         <activity android:name=".DnB"
-            android:label="@string/first_style"/>
+            android:label="@string/first_style"
+            android:parentActivityName=".MainActivity"/>
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity"/>
         <activity android:name=".Dubstep"
-            android:label="@string/second_style"/>
+            android:label="@string/second_style"
+            android:parentActivityName=".MainActivity"/>
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity"/>
         <activity android:name=".House"
-            android:label="@string/third_style"/>
+            android:label="@string/third_style"
+            android:parentActivityName=".MainActivity"/>
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity"/>
     </application>
 
 </manifest>
